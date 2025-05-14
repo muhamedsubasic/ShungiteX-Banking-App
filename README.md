@@ -1,6 +1,6 @@
 # ShungiteX-Banking-App
 <p align="center">
-  <img src="images/logoFull.png">
+  <img width="400" height="400" src="images/logoFull.png">
 </p>
 
 ---
