@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -22,7 +23,7 @@ fun AccountScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFE5E5E5)),
+            .background(Color(0xFF913D3D)),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -47,58 +48,6 @@ fun AccountScreen() {
             Spacer(modifier = Modifier.height(24.dp))
 
             OutlinedTextField(
-                value = currentPassword,
-                onValueChange = { currentPassword = it },
-                label = { Text("Current password") },
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFD32F2F),
-                    focusedLabelColor = Color(0xFFD32F2F),
-                    cursorColor = Color(0xFFD32F2F)
-                )
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = newPassword,
-                onValueChange = { newPassword = it },
-                label = { Text("New password") },
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFD32F2F),
-                    focusedLabelColor = Color(0xFFD32F2F),
-                    cursorColor = Color(0xFFD32F2F)
-                )
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = confirmPassword,
-                onValueChange = { confirmPassword = it },
-                label = { Text("Confirm new password") },
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFD32F2F),
-                    focusedLabelColor = Color(0xFFD32F2F),
-                    cursorColor = Color(0xFFD32F2F)
-                )
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { /* Confirm password change */ },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336))
-            ) {
-                Text("Confirm Password", color = Color.White)
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            OutlinedTextField(
                 value = newEmail,
                 onValueChange = { newEmail = it },
                 label = { Text("New Email") },
@@ -117,18 +66,78 @@ fun AccountScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336))
             ) {
-                Text("Confirm Email", color = Color.White)
+                Text("Confirm new Email", color = Color.White)
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
+
+
+            OutlinedTextField(
+                value = currentPassword,
+                onValueChange = { currentPassword = it },
+                label = { Text("Current password") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFD32F2F),
+                    focusedLabelColor = Color(0xFFD32F2F),
+                    cursorColor = Color(0xFFD32F2F)
+                )
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = newPassword,
+                onValueChange = { newPassword = it },
+                label = { Text("New password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation(), // This hides the text
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFD32F2F),
+                    focusedLabelColor = Color(0xFFD32F2F),
+                    cursorColor = Color(0xFFD32F2F)
+                )
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                label = { Text("Confirm new password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFD32F2F),
+                    focusedLabelColor = Color(0xFFD32F2F),
+                    cursorColor = Color(0xFFD32F2F)
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Button(
-                onClick = { /* Submit all changes */ },
+                onClick = { /* Confirm password change */ },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336))
             ) {
-                Text("Submit", color = Color.White)
+                Text("Confirm new password", color = Color.White)
             }
+
+
+
+//          Removed all of this because there is no reason to have an additional submit button. The user
+//          should be able to either submit new email or new password after pressing it's respective button
+//            Spacer(modifier = Modifier.height(24.dp))
+//            Button(
+//                onClick = { /* Submit all changes */ },
+//                modifier = Modifier.fillMaxWidth(),
+//                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF44336))
+//            ) {
+//                Text("Submit", color = Color.White)
+//            }
+
         }
     }
 }

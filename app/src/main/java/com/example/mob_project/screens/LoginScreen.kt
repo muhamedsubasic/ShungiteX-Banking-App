@@ -55,7 +55,7 @@ fun LoginScreen(navController: NavHostController) {
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email", color = Color.Red) },
+            label = { Text("Email", color = Color.DarkGray) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth(),
@@ -63,8 +63,8 @@ fun LoginScreen(navController: NavHostController) {
                 focusedBorderColor = Color.Red,
                 unfocusedBorderColor = Color.DarkGray,
                 cursorColor = Color.Red,
-                focusedLabelColor = Color.Red,
-                unfocusedLabelColor = Color.Gray,
+                focusedLabelColor = Color.Black,
+                unfocusedLabelColor = Color.DarkGray,
                 focusedTextColor = Color.Black,
                 unfocusedTextColor = Color.Black
             )
@@ -75,7 +75,7 @@ fun LoginScreen(navController: NavHostController) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password", color = Color.Red) },
+            label = { Text("Password", color = Color.DarkGray) },
             visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
             modifier = Modifier
@@ -86,7 +86,7 @@ fun LoginScreen(navController: NavHostController) {
                 unfocusedBorderColor = Color.DarkGray,
                 cursorColor = Color.Red,
                 focusedLabelColor = Color.Red,
-                unfocusedLabelColor = Color.Gray,
+                unfocusedLabelColor = Color.DarkGray,
                 focusedTextColor = Color.Black,
                 unfocusedTextColor = Color.Black
             )
@@ -109,7 +109,7 @@ fun LoginScreen(navController: NavHostController) {
 
         Text(
             "Forgot password ?",
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 12.sp,
             color = Color.DarkGray
         )
