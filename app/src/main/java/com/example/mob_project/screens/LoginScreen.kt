@@ -35,19 +35,23 @@ fun LoginScreen(navController: NavHostController) {
 
 
         Spacer(modifier = Modifier.height(12.dp))
+        Image(
+            painter = painterResource(id = R.drawable.moblogo1),
+            contentDescription = "Payment Banner",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+        )
 
-        Text("ShungiteX", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.Red)
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Login", fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = Color.Red)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            "Sign in into your account",
-            fontSize = 14.sp,
-            color = Color.Gray,
-            textAlign = TextAlign.Center
-        )
+//        Text(
+//            "Sign in into your account",
+//            fontSize = 14.sp,
+//            color = Color.Gray,
+//            textAlign = TextAlign.Center
+//        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
