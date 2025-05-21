@@ -1,4 +1,5 @@
 # ShungiteX-Banking-App
+  Deadline for submission: **1st of June 2025**
 <p align="center">
   <img width="400" height="400" src="images/logoFull.png">
 </p>
