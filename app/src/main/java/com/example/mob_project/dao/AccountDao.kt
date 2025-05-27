@@ -9,5 +9,5 @@ import java.util.Locale
 @Dao
 interface AccountDao : BaseDao<Account> {
     @Query("SELECT * FROM Account WHERE id= :id;")
-    suspend fun getAccountsById(id: Int): Account?
+    suspend fun getAccountById(id: Int): Account?
 }
