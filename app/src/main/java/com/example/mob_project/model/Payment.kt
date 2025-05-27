@@ -23,9 +23,5 @@ data class Payment(
     val receiverAccountNumber: String,
     val amount: Double,
     val description: String?,
-    val status: PaymentStatus
-) {
-    enum class PaymentStatus {
-        PENDING, COMPLETED, FAILED, CANCELLED
-    }
-}
+    val status: String
+)

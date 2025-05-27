@@ -7,5 +7,5 @@ import com.example.mob_project.model.Payment
 @Dao
 interface PaymentDao : BaseDao<Payment> {
     @Query("SELECT * FROM Payments WHERE accountId = :accountId")
-    suspend fun getPaymentByAccountId(accountId: Int): List<Payment>
+    suspend fun getPaymentsByAccountId(accountId: Int): List<Payment>
 }

@@ -24,7 +24,7 @@ data class User(
     val username: String,
     val passwordHash: String,
     val email: String,
-    val createdAt: Date,
+    val createdAt: Date?,
     val lastLogin: Date?,
     val accountId: Int?
 )

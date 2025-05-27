@@ -11,20 +11,8 @@ data class Card(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val accountId: Int,
     val cardNumber: String,
-    val cardType: CardType,
-    val cardNetwork: CardNetwork,
-    val status: CardStatus,
+    val cardType: String,
+    val cardNetwork: String,
+    val status: String,
     val expiryDate: Date
-) {
-    enum class CardType {
-        DEBIT, CREDIT, PREPAID
-    }
-
-    enum class CardNetwork {
-        VISA, MASTERCARD, AMERICAN_EXPRESS, DISCOVER
-    }
-
-    enum class CardStatus {
-        ACTIVE, INACTIVE, BLOCKED, EXPIRED
-    }
-}
+)

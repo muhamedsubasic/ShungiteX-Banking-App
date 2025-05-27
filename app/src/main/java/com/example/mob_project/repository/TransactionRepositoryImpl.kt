@@ -7,8 +7,8 @@ import javax.inject.Inject
 class TransactionRepositoryImpl @Inject constructor(
     private val transactionDao: TransactionDao
 ) : TransactionRepository {
-    override suspend fun getTransactionsByAccountId(accountId: Int): List<Transaction> {
-        return transactionDao.getTransactionByAccountId(accountId)
+    override suspend fun getTransactionById(id: Int): Transaction? {
+        return transactionDao.getTransactionById(id)
     }
 
     override suspend fun insert(entity: Transaction) {
@@ -21,5 +21,8 @@ class TransactionRepositoryImpl @Inject constructor(
 
     override suspend fun delete(entity: Transaction) {
         transactionDao.delete(entity)
+    }
+    override suspend fun getAllTransactions(): List<Transaction> {
+        return transactionDao.getAllTransactions()
     }
 }
