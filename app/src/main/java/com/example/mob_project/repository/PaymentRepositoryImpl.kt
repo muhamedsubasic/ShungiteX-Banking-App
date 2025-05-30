@@ -7,8 +7,8 @@ import javax.inject.Inject
 class PaymentRepositoryImpl @Inject constructor(
     private val paymentDao: PaymentDao
 ) : PaymentRepository {
-    override suspend fun getPaymentsByAccountId(accountId: Int): List<Payment> {
-        return paymentDao.getPaymentsByAccountId(accountId)
+    override suspend fun getPaymentByAccountId(accountId: Int): Payment? {
+        return paymentDao.getPaymentByAccountId(accountId)
     }
 
     override suspend fun insert(entity: Payment) {

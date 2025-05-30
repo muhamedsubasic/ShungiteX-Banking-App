@@ -4,6 +4,16 @@ import android.content.Context
 import androidx.room.Room
 import com.example.mob_project.dao.*
 import com.example.mob_project.database.AppDatabase
+import com.example.mob_project.repository.AccountRepository
+import com.example.mob_project.repository.AccountRepositoryImpl
+import com.example.mob_project.repository.CardRepository
+import com.example.mob_project.repository.CardRepositoryImpl
+import com.example.mob_project.repository.PaymentRepository
+import com.example.mob_project.repository.PaymentRepositoryImpl
+import com.example.mob_project.repository.TransactionRepository
+import com.example.mob_project.repository.TransactionRepositoryImpl
+import com.example.mob_project.repository.UserRepository
+import com.example.mob_project.repository.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,15 +29,44 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
-            context,
+            context.applicationContext,
             AppDatabase::class.java,
             "banking_app.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
-    @Provides fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
+    @Provides
+    fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
+
+
+
     @Provides fun provideAccountDao(db: AppDatabase): AccountDao = db.accountDao()
     @Provides fun provideCardDao(db: AppDatabase): CardDao = db.cardDao()
     @Provides fun provideTransactionDao(db: AppDatabase): TransactionDao = db.transactionDao()
     @Provides fun providePaymentDao(db: AppDatabase): PaymentDao = db.paymentDao()
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(userDao: UserDao): UserRepository = UserRepositoryImpl(userDao)
+
+    @Provides
+    @Singleton
+    fun provideAccountRepository(accountDao: AccountDao): AccountRepository =
+        AccountRepositoryImpl(accountDao)
+
+    @Provides
+    @Singleton
+    fun provideCardRepository(cardDao: CardDao): CardRepository =
+        CardRepositoryImpl(cardDao)
+
+    @Provides
+    @Singleton
+    fun provideTransactionRepository(transactionDao: TransactionDao): TransactionRepository =
+        TransactionRepositoryImpl(transactionDao)
+
+    @Provides
+    @Singleton
+    fun providePaymentRepository(paymentDao: PaymentDao): PaymentRepository =
+        PaymentRepositoryImpl(paymentDao)
+
 }
