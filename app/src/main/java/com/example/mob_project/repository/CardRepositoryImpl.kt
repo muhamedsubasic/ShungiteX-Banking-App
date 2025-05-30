@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CardRepositoryImpl @Inject constructor(
     private val cardDao: CardDao
 ) : CardRepository {
-    override suspend fun getCardByAccountId(accountId: Int): List<Card> {
+    override suspend fun getCardByAccountId(accountId: Int): Card? {
         return cardDao.getCardByAccountId(accountId)
     }
 

@@ -18,7 +18,7 @@ import com.example.mob_project.model.Payment
 
 @Database(
     entities = [User::class, Account::class, Card::class, Payment::class, Transaction::class],
-    version = 1
+    version = 5,
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -27,4 +27,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun cardDao(): CardDao
     abstract fun paymentDao(): PaymentDao
     abstract fun transactionDao(): TransactionDao
+
 }
