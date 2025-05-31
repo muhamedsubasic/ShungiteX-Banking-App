@@ -101,8 +101,8 @@ fun LoginScreen(navController: NavHostController) {
         Button(
             onClick = {
                 navController.navigate(BottomNavItem.Home.route) {
-                popUpTo("login") { inclusive = true }
-            } },
+                    popUpTo("login") { inclusive = true }
+                } },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
         ) {
