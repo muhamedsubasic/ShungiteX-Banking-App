@@ -22,7 +22,7 @@ import java.util.Date
 data class User(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val username: String,
-    val passwordHash: String,
+    val password: String,
     val email: String,
     val createdAt: Date?,
     val lastLogin: Date?,

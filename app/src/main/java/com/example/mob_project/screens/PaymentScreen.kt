@@ -16,13 +16,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.mob_project.R
 import com.example.mob_project.viewmodels.PaymentViewModel
 import com.example.mob_project.viewmodels.PaymentState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentScreen() {
+fun PaymentScreen(navController: NavHostController) {
     val paymentViewModel: PaymentViewModel = viewModel()
     val paymentState by paymentViewModel.paymentState.collectAsState()
 

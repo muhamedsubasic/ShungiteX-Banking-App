@@ -26,6 +26,15 @@ fun LoginScreen(navController: NavHostController) {
     var password by remember { mutableStateOf("") }
     val viewModel: AuthViewModel = viewModel()
     val loginState by viewModel.loginState.collectAsState()
+    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn) {
+            navController.navigate(BottomNavItem.Home.route) {
+                popUpTo("login") { inclusive = true }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier

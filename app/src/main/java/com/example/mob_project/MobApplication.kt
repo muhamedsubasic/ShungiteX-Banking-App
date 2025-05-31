@@ -10,5 +10,6 @@ class MobApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         // Force database creation }
+
 }
 }
