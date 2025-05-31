@@ -57,6 +57,9 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation(libs.protolite.well.known.types)
+    implementation(libs.transport.runtime)
+    implementation(libs.androidx.datastore.core.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,6 +68,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     val room_version = "2.7.1"
+
 
     implementation("androidx.room:room-runtime:$room_version")
     implementation("com.google.dagger:hilt-android:2.56.1")
