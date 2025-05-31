@@ -69,6 +69,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     val room_version = "2.7.1"
 
+
     implementation("androidx.room:room-runtime:$room_version")
     implementation("com.google.dagger:hilt-android:2.56.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
