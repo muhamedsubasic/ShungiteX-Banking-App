@@ -6,7 +6,18 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity
+@Entity(
+    tableName = "Card",
+    foreignKeys = [
+        ForeignKey(
+            entity = Account::class,
+            parentColumns = ["id"],
+            childColumns = ["accountId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["accountId"])]
+)
 data class Card(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val accountId: Int,

@@ -57,7 +57,57 @@ object DatabaseModule {
     private suspend fun prepopulateDatabase(database: AppDatabase) {
         Log.d("DatabaseModule", "Prepopulating database...")
 
-        val account = Account(                      // Dummy random account
+        suspend fun insertAccountWithCards(
+            firstName: String,
+            lastName: String,
+            accountNumber: String,
+            iban: String,
+            address: String,
+            phoneNumber: String,
+            bankName: String
+        ): Int {
+            val account = Account(
+                firstName = firstName,
+                lastName = lastName,
+                accountNumber = accountNumber,
+                iban = iban,
+                address = address,
+                phoneNumber = phoneNumber,
+                bankName = bankName
+            )
+            val accountId = database.accountDao().insert(account).toInt()
+            Log.d("DatabaseModule", "Inserted account with ID $accountId")
+
+            val expiryDate = Calendar.getInstance().apply {
+                add(Calendar.YEAR, 3)
+            }.time
+
+            val debitCard = Card(
+                accountId = accountId,
+                cardNumber = "411111111111${(1000..9999).random()}",
+                cardType = "Debit",
+                cardNetwork = "VISA",
+                status = "ACTIVE",
+                expiryDate = expiryDate
+            )
+            database.cardDao().insert(debitCard)
+
+            val creditCard = Card(
+                accountId = accountId,
+                cardNumber = "511111111111${(1000..9999).random()}",
+                cardType = "Credit",
+                cardNetwork = "MasterCard",
+                status = "ACTIVE",
+                expiryDate = expiryDate
+            )
+            database.cardDao().insert(creditCard)
+
+            Log.d("DatabaseModule", "Inserted debit and credit cards for account ID $accountId")
+
+            return accountId
+        }
+
+        val adminAccountId = insertAccountWithCards(
             firstName = "John",
             lastName = "Doe",
             accountNumber = "123555123",
@@ -66,52 +116,37 @@ object DatabaseModule {
             phoneNumber = "+38761123123",
             bankName = "ShungiteX"
         )
-        val accountId = database.accountDao().insert(account).toInt()
-        Log.d("DatabaseModule", "Inserted account with ID $accountId")
-
-        val user = User(
+        val adminUser = User(
             username = "admin",
             password = "admin123",
             email = "admin@example.com",
             createdAt = Date(),
             lastLogin = null,
-            accountId = accountId
+            accountId = adminAccountId
         )
-        database.userDao().insert(user)
+        database.userDao().insert(adminUser)
+        Log.d("DatabaseModule", "Inserted user: admin")
 
-        val expiryDate = Calendar.getInstance().apply {
-            add(Calendar.YEAR, 3)
-        }.time
-
-        val card = Card(
-            accountId = accountId,
-            cardNumber = "4111111111111111",
-            cardType = "Debit",
-            cardNetwork = "VISA",
-            status = "ACTIVE",
-            expiryDate = expiryDate
+        // Bob account + user
+        val bobAccountId = insertAccountWithCards(
+            firstName = "Bob",
+            lastName = "Johnson",
+            accountNumber = "555666777",
+            iban = "GB11BUKB20201598765432",
+            address = "789 Maple Avenue, London",
+            phoneNumber = "+441112223334",
+            bankName = "Super Bank"
         )
-        database.cardDao().insert(card)
-
-        val payment = Payment(
-            accountId = accountId,
-            receiverAccountNumber = "987654321",
-            amount = 100.0,
-            description = "Initial deposit",
-            status = "COMPLETED"
+        val bobUser = User(
+            username = "bob",
+            password = "bobpass",
+            email = "bob@example.com",
+            createdAt = Date(),
+            lastLogin = null,
+            accountId = bobAccountId
         )
-        val paymentId = database.paymentDao().insert(payment).toInt()
-
-        val transaction = Transaction(
-            transactionType = "DEPOSIT",
-            amount = 100.0,
-            referenceNumber = "INIT001",
-            status = "COMPLETED",
-            date = Date(),
-            currency = "GBP",
-            paymentId = paymentId
-        )
-        database.transactionDao().insert(transaction)
+        database.userDao().insert(bobUser)
+        Log.d("DatabaseModule", "Inserted user: bob")
 
         Log.d("DatabaseModule", "Database seeding completed.")
     }
