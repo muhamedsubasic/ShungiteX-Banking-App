@@ -1,5 +1,6 @@
 package com.example.mob_project.screens
 
+import android.R.attr.type
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -84,66 +85,90 @@ private fun parseDateSafely(dateString: String): Date {
 }
 
 @Composable
-fun CardItem(
-    type: String,
-    lastFour: String,
-    balance: String,
-    backgroundColor: Color,
-    logo: Painter
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(140.dp),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        elevation = CardDefaults.cardElevation(6.dp)
+fun CardDisplaySection() {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(verticalArrangement = Arrangement.SpaceBetween) {
-                Text("${type} card", color = Color.White, fontSize = 14.sp)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(balance, color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                Text(lastFour, color = Color.White, fontSize = 14.sp)
-            }
-            Column(
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.End,
-                modifier = Modifier.fillMaxHeight()
-            ) {
-                Image(
-                    painter = logo,
-                    contentDescription = "$type logo",
-                    modifier = Modifier.size(48.dp)
-                )
-            }
-        }
+        Text(
+            text = "Cards",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        BankCardd(
+            balance = "12,550.50$",
+            cardNumber = "16xxxxxxx",
+            cardType = "Debit card",
+            logo = painterResource(id = R.drawable.mastercard_logo),
+            cardColor = Color(0xCE000000),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        BankCardd(
+            balance = "1,644.52$",
+            cardNumber = "54xxxxxxx",
+            cardType = "Credit card",
+            logo = painterResource(id = R.drawable.visa_logo),
+            cardColor = Color(0xFF3F51B5)
+        )
     }
 }
 
 @Composable
-fun CardDisplaySection() {
-    Column(modifier = Modifier.padding(16.dp)) {
-        CardItem(
-            type = "Debit",
-            lastFour = "16xxxxxxx",
-            balance = "12,550.50$",
-            backgroundColor = Color.Black,
-            logo = painterResource(id = R.drawable.mastercard_logo)
+fun BankCardd(
+    balance: String,
+    cardNumber: String,
+    cardType: String,
+    logo: Painter,
+    cardColor: Color
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = cardColor
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        CardItem(
-            type = "Credit",
-            lastFour = "54xxxxxxx",
-            balance = "1,644.52$",
-            backgroundColor = Color(0xFF304FFE),
-            logo = painterResource(id = R.drawable.visa_inc__logo_wine)
-        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = cardType,
+                color = Color.White,
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Column {
+                Text(
+                    text = balance,
+                    color = Color.White,
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = cardNumber,
+                    color = Color.White.copy(alpha = 0.8f),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Image(
+                    painter = logo,
+                    contentDescription = "$type logo",
+                    modifier = Modifier.size(35.dp)
+                )
+            }
+        }
     }
 }
 

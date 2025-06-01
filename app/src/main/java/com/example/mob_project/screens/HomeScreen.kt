@@ -1,5 +1,6 @@
 package com.example.mob_project.screens
 
+import android.R.attr.type
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -11,10 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.mob_project.R
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
@@ -49,7 +53,7 @@ fun CardsSection() {
             balance = "12,550.50$",
             cardNumber = "16xxxxxxx",
             cardType = "Debit card",
-            cardBrand = "Mastercard",
+            logo = painterResource(id = R.drawable.mastercard_logo),
             cardColor = Color(0xCE000000)
         )
 
@@ -59,7 +63,7 @@ fun CardsSection() {
             balance = "1,644.52$",
             cardNumber = "54xxxxxxx",
             cardType = "Credit card",
-            cardBrand = "VISA",
+            logo = painterResource(id = R.drawable.visa_logo),
             cardColor = Color(0xFF3F51B5)
         )
     }
@@ -70,7 +74,7 @@ fun BankCard(
     balance: String,
     cardNumber: String,
     cardType: String,
-    cardBrand: String,
+    logo: Painter,
     cardColor: Color
 ) {
     Card(
@@ -112,10 +116,10 @@ fun BankCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                Text(
-                    text = cardBrand,
-                    color = Color.White,
-                    style = MaterialTheme.typography.bodyLarge
+                Image(
+                    painter = logo,
+                    contentDescription = "$type logo",
+                    modifier = Modifier.size(35.dp)
                 )
             }
         }
