@@ -11,4 +11,7 @@ interface TransactionDao : BaseDao<Transaction> {
 
     @Query("SELECT * FROM Transactions ORDER BY date DESC")
     suspend fun getAllTransactions(): List<Transaction>
+
+    @Query("DELETE FROM Transactions")
+    suspend fun clearAllTransactions()
 }

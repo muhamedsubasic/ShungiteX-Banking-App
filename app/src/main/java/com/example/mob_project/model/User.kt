@@ -1,5 +1,6 @@
 package com.example.mob_project.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -25,6 +26,7 @@ data class User(
     val password: String,
     val email: String,
     val createdAt: Date?,
-    val lastLogin: Date?,
+    @ColumnInfo(defaultValue = "0")
+    val lastLogin: Long,
     val accountId: Int?
 )

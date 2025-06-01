@@ -29,7 +29,7 @@ fun HomeScreen(navController: NavHostController) {
             .background(Color(0xFFF5F5F5))
     ) {
         CardsSection()
-        RecentTransactionsSection()
+        RecentTransactionsSection(navController)
         ExpensesSection()
         Spacer(modifier = Modifier.height(16.dp))
     }
@@ -127,7 +127,7 @@ fun BankCard(
 }
 
 @Composable
-fun RecentTransactionsSection() {
+fun RecentTransactionsSection(navController: NavHostController) {
     Spacer(modifier = Modifier.height(40.dp))
 
     Card(
@@ -160,7 +160,7 @@ fun RecentTransactionsSection() {
 
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = { /* Handle view more */ },
+                onClick = { navController.navigate("transactions") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),

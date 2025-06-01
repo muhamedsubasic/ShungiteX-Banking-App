@@ -8,4 +8,7 @@ import com.example.mob_project.model.Card
 interface CardDao : BaseDao<Card> {
     @Query("SELECT * FROM Card WHERE accountId = :accountId")
     suspend fun getCardByAccountId(accountId: Int): Card?
+
+    @Query("DELETE FROM Card")
+    suspend fun clearAllCards()
 }

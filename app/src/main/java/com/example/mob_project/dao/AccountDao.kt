@@ -10,4 +10,8 @@ import java.util.Locale
 interface AccountDao : BaseDao<Account> {
     @Query("SELECT * FROM Account WHERE id= :id;")
     suspend fun getAccountById(id: Int): Account?
+
+    @Query("DELETE FROM Account")
+    suspend fun clearAllAccounts()
 }
+

@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
         } else {
             Log.e("DB_STATUS", "Database NOT FOUND!")
         }
-
+a
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()

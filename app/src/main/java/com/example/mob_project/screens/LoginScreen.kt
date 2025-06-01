@@ -21,122 +21,62 @@ import com.example.mob_project.navigation.BottomNavItem
 import com.example.mob_project.viewmodels.AuthViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    val viewModel: AuthViewModel = viewModel()
+fun LoginScreen(
+    viewModel: AuthViewModel = viewModel(),
+    onLoginSuccess: () -> Unit
+) {
+    var email by remember { mutableStateOf("admin@example.com") }
+    var password by remember { mutableStateOf("admin123") }
+
     val loginState by viewModel.loginState.collectAsState()
     val isLoggedIn by viewModel.isLoggedIn.collectAsState()
 
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn) {
-            navController.navigate(BottomNavItem.Home.route) {
-                popUpTo("login") { inclusive = true }
-            }
+            onLoginSuccess()
         }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(12.dp))
-        Image(
-            painter = painterResource(id = R.drawable.moblogo1),
-            contentDescription = "Payment Banner",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(180.dp)
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        OutlinedTextField(
+        TextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email", color = Color.DarkGray) },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Red,
-                unfocusedBorderColor = Color.DarkGray,
-                cursorColor = Color.Red,
-                focusedLabelColor = Color.Black,
-                unfocusedLabelColor = Color.DarkGray,
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
-            )
+            label = { Text("Email") }
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation()
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password", color = Color.DarkGray) },
-            visualTransformation = PasswordVisualTransformation(),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Red,
-                unfocusedBorderColor = Color.DarkGray,
-                cursorColor = Color.Red,
-                focusedLabelColor = Color.Red,
-                unfocusedLabelColor = Color.DarkGray,
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
-            )
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
         Button(
-            onClick = { viewModel.login(email, password, navController) },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+            onClick = { viewModel.login(email, password) },
             enabled = loginState !is AuthViewModel.LoginState.Loading
         ) {
-            if (loginState is AuthViewModel.LoginState.Loading) {
-                CircularProgressIndicator(
-                    color = Color.White,
-                    modifier = Modifier.size(24.dp)
+            Text("Login")
+        }
+
+        when (loginState) {
+            is AuthViewModel.LoginState.Loading -> CircularProgressIndicator()
+            is AuthViewModel.LoginState.Error -> {
+                Text(
+                    text = (loginState as AuthViewModel.LoginState.Error).message,
+
                 )
-            } else {
-                Text("Login", color = Color.White)
             }
+            else -> {}
         }
-
-        if (loginState is AuthViewModel.LoginState.Error) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = (loginState as AuthViewModel.LoginState.Error).message,
-                color = Color.Red,
-                fontSize = 12.sp,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            "Forgot password?",
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontSize = 12.sp,
-            color = Color.DarkGray
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            "Help & FAQ",
-            fontSize = 12.sp,
-            textAlign = TextAlign.Center,
-            color = Color.DarkGray,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
     }
 }
