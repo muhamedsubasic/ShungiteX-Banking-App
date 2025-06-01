@@ -1,14 +1,18 @@
 package com.example.mob_project.screens
 
-import android.R.attr.type
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,77 +21,42 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mob_project.R
 import com.example.mob_project.model.Transaction
+import com.example.mob_project.viewmodel.TransactionViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun TransactionsScreen(navController: NavController) {
-    val transactions = listOf(
-        Transaction(
-            transactionType = "STORE A",
-            amount = 25.50,
-            referenceNumber = "147xxxxxx",
-            status = "SENT",
-            date = parseDateSafely("01.11.2024"),
-            currency = "USD",
-            paymentId = null
-        ),
-        Transaction(
-            transactionType = "STORE A",
-            amount = 5.50,
-            referenceNumber = "147xxxxxx",
-            status = "SENT",
-            date = parseDateSafely("02.11.2024"),
-            currency = "USD",
-            paymentId = null
-        ),
-        Transaction(
-            transactionType = "AMT",
-            amount = 50.00,
-            referenceNumber = "238xxxxxx",
-            status = "RECEIVED",
-            date = parseDateSafely("12.01.2024"),
-            currency = "USD",
-            paymentId = null
-        ),
-        Transaction(
-            transactionType = "PAYPAL INC",
-            amount = 100.00,
-            referenceNumber = "238xxxxxx",
-            status = "RECEIVED",
-            date = parseDateSafely("15.01.2024"),
-            currency = "USD",
-            paymentId = null
-        )
-    )
+fun TransactionsScreen(
+    navController: NavController,
+    viewModel: TransactionViewModel = hiltViewModel()
+) {
+    val transactions by viewModel.transactions.collectAsState()
+
+    LaunchedEffect(Unit) {
+        //viewModel.insertSampleTransaction()
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(bottom = 56.dp)
+            .padding(16.dp)
     ) {
         CardDisplaySection()
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         TransactionSection(transactions)
     }
-}
 
-private fun parseDateSafely(dateString: String): Date {
-    return try {
-        SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).parse(dateString) ?: Date()
-    } catch (e: Exception) {
-        Date() // Return current date as fallback
-    }
 }
 
 @Composable
 fun CardDisplaySection() {
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.padding(horizontal = 0.dp)
     ) {
         Text(
             text = "Cards",
@@ -128,9 +97,7 @@ fun BankCardd(
             .fillMaxWidth()
             .height(200.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = cardColor
-        )
+        colors = CardDefaults.cardColors(containerColor = cardColor)
     ) {
         Column(
             modifier = Modifier
@@ -164,7 +131,7 @@ fun BankCardd(
             ) {
                 Image(
                     painter = logo,
-                    contentDescription = "$type logo",
+                    contentDescription = "$cardType logo",
                     modifier = Modifier.size(35.dp)
                 )
             }
@@ -174,16 +141,21 @@ fun BankCardd(
 
 @Composable
 fun TransactionSection(transactions: List<Transaction>) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 0.dp)) {
         Text(
             text = "Recent transactions",
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        transactions.forEach { tx ->
-            TransactionItem(tx)
-            Spacer(modifier = Modifier.height(8.dp))
+
+        if (transactions.isEmpty()) {
+            Text("No transactions yet.")
+        } else {
+            transactions.forEach { tx ->
+                TransactionItem(tx)
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }
@@ -191,7 +163,7 @@ fun TransactionSection(transactions: List<Transaction>) {
 @Composable
 fun TransactionItem(tx: Transaction) {
     val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-    val formattedDate = dateFormat.format(tx.date)
+    val formattedDate = tx.date?.let { dateFormat.format(it) } ?: "Unknown Date"
     val isPositive = tx.status == "RECEIVED"
 
     Row(
