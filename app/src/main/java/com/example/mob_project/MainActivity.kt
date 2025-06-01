@@ -18,7 +18,10 @@ import com.example.mob_project.viewmodels.AuthViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import android.util.Log
+import androidx.hilt.navigation.compose.hiltViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +36,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val authViewModel: AuthViewModel = viewModel()
+            val authViewModel: AuthViewModel = hiltViewModel()
             val isLoggedIn by authViewModel.isLoggedIn.collectAsState()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route

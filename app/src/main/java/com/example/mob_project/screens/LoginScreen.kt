@@ -11,25 +11,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.mob_project.R
 import com.example.mob_project.navigation.BottomNavItem
 import com.example.mob_project.viewmodels.AuthViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
-    var email by remember { mutableStateOf("") }
+fun LoginScreen(
+    navController: NavHostController,
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val viewModel: AuthViewModel = viewModel()
-    val loginState by viewModel.loginState.collectAsState()
-    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
 
-    LaunchedEffect(isLoggedIn) {
-        if (isLoggedIn) {
+    val loginState by authViewModel.loginState.collectAsState()
+
+    LaunchedEffect(loginState) {
+        if (loginState is AuthViewModel.LoginState.Success) {
             navController.navigate(BottomNavItem.Home.route) {
                 popUpTo("login") { inclusive = true }
             }
@@ -46,7 +47,7 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(12.dp))
         Image(
             painter = painterResource(id = R.drawable.moblogo1),
-            contentDescription = "Payment Banner",
+            contentDescription = "App Logo",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp)
@@ -55,9 +56,9 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email", color = Color.DarkGray) },
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username", color = Color.DarkGray) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(
@@ -95,7 +96,7 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { viewModel.login(email, password, navController) },
+            onClick = { authViewModel.login(username, password) },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
             enabled = loginState !is AuthViewModel.LoginState.Loading
@@ -134,7 +135,6 @@ fun LoginScreen(navController: NavHostController) {
         Text(
             "Help & FAQ",
             fontSize = 12.sp,
-            textAlign = TextAlign.Center,
             color = Color.DarkGray,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )

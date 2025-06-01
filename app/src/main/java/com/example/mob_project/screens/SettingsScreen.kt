@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.mob_project.viewmodels.AuthViewModel
@@ -27,7 +28,8 @@ fun SettingsScreen(navController: NavHostController) {
     var notificationsEnabled by remember { mutableStateOf(true) }
     var darkModeEnabled by remember { mutableStateOf(false) }
     var biometricLoginEnabled by remember { mutableStateOf(true) }
-    val authViewModel: AuthViewModel = viewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
+
 
 
     Column(
