@@ -29,7 +29,8 @@ fun SettingsScreen(navController: NavHostController) {
     var darkModeEnabled by remember { mutableStateOf(false) }
     var biometricLoginEnabled by remember { mutableStateOf(true) }
     val authViewModel: AuthViewModel = hiltViewModel()
-
+    var showHelpDialog by remember { mutableStateOf(false) }
+    var showAboutDialog by remember { mutableStateOf(false) }
 
 
     Column(
@@ -92,18 +93,70 @@ fun SettingsScreen(navController: NavHostController) {
             SettingsItem(
                 icon = Icons.Default.Help,
                 title = "Help",
-                onClick = { }
+                onClick = { showHelpDialog = true }
             )
             SettingsItem(
                 icon = Icons.Default.Info,
                 title = "About",
-                onClick = { }
+                onClick = { showAboutDialog = true }
             )
             SettingsItem(
                 icon = Icons.Default.ExitToApp,
                 title = "Log Out",
                 onClick = {authViewModel.logout(navController)},
                 color = Color(0xFFD32F2F))
+
+
+        }
+        if (showHelpDialog) {
+            AlertDialog(
+                onDismissRequest = { showHelpDialog = false },
+                title = { Text("Help Center", fontWeight = FontWeight.Bold) },
+                text = {
+                    Column {
+                        Text("Frequently Asked Questions:")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("• How to change my password?")
+                        Text("• How to link a new bank account?")
+                        Text("• How to enable biometric login?")
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text("For further assistance, please contact shungitex@gmail.com")
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = { showHelpDialog = false },
+                        colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFFD32F2F))
+                    ) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+
+        if (showAboutDialog) {
+            AlertDialog(
+                onDismissRequest = { showAboutDialog = false },
+                title = { Text("About", fontWeight = FontWeight.Bold) },
+                text = {
+                    Column {
+                        Text("Shungite X", fontWeight = FontWeight.Bold)
+                        Text("Version 1.0.0")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("A simple and secure way to manage your finances.")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("© 2024 ShungiteX Inc. All rights reserved.")
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = { showAboutDialog = false },
+                        colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFFD32F2F))
+                    ) {
+                        Text("OK")
+                    }
+                }
+            )
         }
     }
 }
