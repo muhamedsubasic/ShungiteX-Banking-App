@@ -14,8 +14,6 @@ import com.example.mob_project.model.Account
 import com.example.mob_project.model.Card
 import com.example.mob_project.model.Payment
 
-
-
 @Database(
     entities = [User::class, Account::class, Card::class, Payment::class, Transaction::class],
     version = 5,
@@ -27,5 +25,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun cardDao(): CardDao
     abstract fun paymentDao(): PaymentDao
     abstract fun transactionDao(): TransactionDao
-
 }

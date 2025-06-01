@@ -17,10 +17,19 @@ import com.example.mob_project.navigation.NavigationGraph
 import com.example.mob_project.viewmodels.AuthViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
+import android.util.Log
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val dbFile = getDatabasePath("banking_app.db")
+        if (dbFile.exists()) {
+            Log.d("DB_STATUS", "Database exists at: ${dbFile.absolutePath}")
+        } else {
+            Log.e("DB_STATUS", "Database NOT FOUND!")
+        }
+
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
