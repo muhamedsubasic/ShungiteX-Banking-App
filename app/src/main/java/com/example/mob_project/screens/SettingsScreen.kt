@@ -102,7 +102,7 @@ fun SettingsScreen(navController: NavHostController) {
             SettingsItem(
                 icon = Icons.Default.ExitToApp,
                 title = "Log Out",
-                onClick = {authViewModel.logout(navController) },
+                onClick = {authViewModel.logout(navController)},
                 color = Color(0xFFD32F2F))
         }
     }

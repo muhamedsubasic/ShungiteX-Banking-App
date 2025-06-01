@@ -34,7 +34,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "banking_app.db"
         )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(true)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
@@ -88,6 +88,7 @@ object DatabaseModule {
                 cardType = "Debit",
                 cardNetwork = "VISA",
                 status = "ACTIVE",
+                balance = 12500.50,
                 expiryDate = expiryDate
             )
             database.cardDao().insert(debitCard)
@@ -98,6 +99,7 @@ object DatabaseModule {
                 cardType = "Credit",
                 cardNetwork = "MasterCard",
                 status = "ACTIVE",
+                balance = 1644.52,
                 expiryDate = expiryDate
             )
             database.cardDao().insert(creditCard)
@@ -147,6 +149,50 @@ object DatabaseModule {
         )
         database.userDao().insert(bobUser)
         Log.d("DatabaseModule", "Inserted user: bob")
+
+        val transactionDao = database.transactionDao()
+
+        val sampleTransactions = listOf(
+            Transaction(
+                transactionType = "DEPOSIT",
+                amount = 100.0,
+                referenceNumber = "REF123",
+                status = "COMPLETED",
+                date = Date(),
+                currency = "USD",
+                paymentId = null
+            ),
+            Transaction(
+                transactionType = "WITHDRAWAL",
+                amount = 25.5,
+                referenceNumber = "REF456",
+                status = "COMPLETED",
+                date = Date(),
+                currency = "USD",
+                paymentId = null
+            ),
+            Transaction(
+                transactionType = "PAYMENT",
+                amount = 50.0,
+                referenceNumber = "REF789",
+                status = "PENDING",
+                date = Date(),
+                currency = "USD",
+                paymentId = null
+            ),
+            Transaction(
+                transactionType = "TRANSFER",
+                amount = 75.25,
+                referenceNumber = "REF101",
+                status = "FAILED",
+                date = Date(),
+                currency = "USD",
+                paymentId = null
+            )
+        )
+
+        sampleTransactions.forEach { transactionDao.insert(it) }
+        Log.d("DatabaseModule", "Inserted 4 sample transactions.")
 
         Log.d("DatabaseModule", "Database seeding completed.")
     }

@@ -25,5 +25,6 @@ data class Card(
     val cardType: String,
     val cardNetwork: String,
     val status: String,
+    val balance: Double,
     val expiryDate: Date
 )
