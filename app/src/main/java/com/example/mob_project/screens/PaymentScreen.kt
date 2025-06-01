@@ -15,11 +15,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.mob_project.R
+import com.example.mob_project.viewmodels.PaymentViewModel
+import com.example.mob_project.viewmodels.PaymentState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentScreen() {
+fun PaymentScreen(navController: NavHostController) {
+    val paymentViewModel: PaymentViewModel = viewModel()
+    val paymentState by paymentViewModel.paymentState.collectAsState()
 
     val accountOptions = listOf("Main Account", "Savings Account", "Business Account")
     var selectedAccount by remember { mutableStateOf(accountOptions[0]) }
@@ -162,14 +168,52 @@ fun PaymentScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // Show error or success messages
+        when (paymentState) {
+            is PaymentState.Error -> {
+                Text(
+                    text = (paymentState as PaymentState.Error).message,
+                    color = Color.Red,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            PaymentState.Success -> {
+                Text(
+                    text = "Payment successful!",
+                    color = Color(0xFF388E3C),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            PaymentState.Loading -> {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            else -> {}
+        }
+
         Button(
             onClick = {
+                paymentViewModel.submitPayment(
+                    fromAccount = selectedAccount,
+                    toAccount = toAccount,
+                    amount = amount,
+                    date = date,
+                    convertCurrency = convertCurrency,
+                    emergencyPayment = emergencyPayment
+                )
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFD32F2F),
                 contentColor = Color.White
-            )
+            ),
+            enabled = paymentState != PaymentState.Loading
         ) {
             Text("Submit Payment")
         }
